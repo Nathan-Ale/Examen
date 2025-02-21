@@ -1,13 +1,32 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function LoginScreen(){
 const [email, setEmail] = useState("");
 const router = useRouter();
-const {login} = useAuth();
+const {login, isAllowed} = useAuth();
+
+// const handleLogin = () => {
+// login(email);
+//   if(isAllowed) {
+//     router.replace("/inicio")
+//   }else{
+//     alert("Solo correos Gmail pueden ingresar.");
+//   }
+// };
+
+useEffect(() => {
+  if (isAllowed) {
+      router.replace("/inicio");
+  }
+}, [isAllowed]);
+
+const handleLogin = () => {
+  login(email);
+};
 
     return(
         <View style={styles.container}>
@@ -27,7 +46,7 @@ const {login} = useAuth();
             autoCapitalize="none"
         />
 
-            <TouchableOpacity style={styles.button} onPress={() => { login(email); router.replace("/home"); }}>
+            <TouchableOpacity style={styles.button} onPress={handleLogin}>
                 <Text style={styles.buttonText}>Ingresar</Text>
             </TouchableOpacity>
         </View>

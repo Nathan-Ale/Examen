@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert, TouchableOpacity, Text } from 'react-native';
+import { useTasks } from '@/contexts/TaskContext';
+import { router } from 'expo-router';
 
 const AddTaskScreen = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const {addTask} = useTasks();
 
   const handleAddTask = () => {
     if (title.trim() === '' || description.trim() === '') {
@@ -11,10 +14,12 @@ const AddTaskScreen = () => {
       return;
     }
 
-    console.log('Tarea agregada:', { title, description });
+    addTask(title, description);
 
     setTitle('');
     setDescription('');
+    
+    router.replace('/inicio')
 
     Alert.alert('Éxito', 'La tarea se ha agregado correctamente.');
   };
@@ -35,10 +40,11 @@ const AddTaskScreen = () => {
         onChangeText={setDescription}
         multiline
       />
-        <TouchableOpacity style={styles.Button}>
+        <TouchableOpacity style={styles.Button}
+        onPress={handleAddTask  }
+        >
             <Text style={styles.ButtonText}>Agregar Tarea</Text>
         </TouchableOpacity>
-      {/* <Button title="Agregar Tarea" onPress={handleAddTask} /> */}
     </View>
   );
 };

@@ -15,7 +15,7 @@ useEffect (()=>{
 
 useEffect (()=>{
     if(isMounted){
-        router.replace(user ? '/home': '/login');
+        router.replace(user ? '/inicio': '/login');
     }
 }, [isMounted])
 return(

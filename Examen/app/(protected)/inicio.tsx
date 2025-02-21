@@ -3,9 +3,11 @@ import { View, ScrollView, TouchableOpacity, Text, StyleSheet } from 'react-nati
 import TaskCard from '../../components/TaskCard';
 import { useAuth } from '../../contexts/AuthContext'; 
 import { router } from 'expo-router';
+import { useTasks } from '@/contexts/TaskContext';
 
-const HomeScreen = () => {
+const InicioScreen = () => {
   const { logout } = useAuth();
+  const { tasks } = useTasks();
 
   const handleLogout = () => {
     logout();
@@ -14,31 +16,27 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      
-      <ScrollView>
-        <TaskCard
-          title="Comprar víveres"
-          description="Comprar leche, pan y huevos."
-        />
-        <TaskCard
-          title="Estudiar React Native"
-          description="Repasar hooks y navegación."
-        />
-        <TaskCard
-          title="Hacer ejercicio"
-          description="Correr 5 km en el parque."
-        />
 
+      <Text style={styles.title}>Lista de Tareas Pendintes</Text>
+
+      <ScrollView>
+        {tasks.map((task) => (
+          <TaskCard
+            key={task.id}
+            title={task.title}
+            description={task.description}
+          />
+        ))}
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Text style={styles.logoutButtonText}>Cerrar sesión</Text>
         </TouchableOpacity>
-
+{/* 
         <TouchableOpacity
         style={styles.addButton}
         onPress={() => router.push('/addTask')}
       >
         <Text style={styles.addButtonText}>Agregar Tarea</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       </ScrollView>
     </View>
   );
@@ -73,6 +71,12 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontWeight: 'bold',
   },
+  title:{
+    textAlign:"center",
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10
+  }
 });
 
-export default HomeScreen;
+export default InicioScreen;
